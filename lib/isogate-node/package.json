@@ -44,7 +44,7 @@
     "@isogate/replay": "1.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.0",
+    "@types/node": "^26.5.1",
     "typescript": "^5.8.3"
   }
 }
