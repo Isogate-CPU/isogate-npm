@@ -1,0 +1,19 @@
+{
+  "name": "@isogate/npm-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The public npm workspace for Isogate's Node.js packages.",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.12.4",
+  "workspaces": [
+    "lib/*"
+  ],
+  "scripts": {
+    "build": "pnpm --filter @isogate/replay build && pnpm --filter @isogate/node build",
+    "typecheck": "pnpm --filter @isogate/replay typecheck && pnpm --filter @isogate/replay build && pnpm --filter @isogate/node typecheck",
+    "test": "pnpm --filter @isogate/replay test",
+    "check": "pnpm typecheck && pnpm test",
+    "pack:dry-run": "pnpm --filter @isogate/replay pack:dry-run && pnpm --filter @isogate/node pack:dry-run"
+  }
+}

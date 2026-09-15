@@ -1,0 +1,49 @@
+{
+  "name": "@isogate/replay",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Deterministic replay and CPU-art primitives used by Isogate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Isogate-CPU/isogate-npm.git",
+    "directory": "lib/isogate-replay"
+  },
+  "homepage": "https://github.com/Isogate-CPU/isogate-npm/tree/main/lib/isogate-replay",
+  "bugs": {
+    "url": "https://github.com/Isogate-CPU/isogate-npm/issues"
+  },
+  "keywords": ["isogate", "deterministic-replay", "cpu-art", "vectors"],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm run build && node --test dist/vectors.test.js",
+    "pack:dry-run": "npm pack --dry-run"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./vectors": {
+      "types": "./dist/vectors.d.ts",
+      "import": "./dist/vectors.js"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3"
+  }
+}
