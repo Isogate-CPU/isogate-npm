@@ -1,25 +1,23 @@
 name: Publish npm packages
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish both packages after npm Trusted Publisher is configured
+        required: true
+        type: boolean
+        default: false
 
-# npm trusted publishing uses the GitHub Actions OIDC identity. No npm
-# authentication token is read or configured by this workflow.
 permissions:
   contents: read
   id-token: write
 
 jobs:
-  publish:
+  verify:
     runs-on: ubuntu-latest
-    environment: npm-release
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -30,8 +28,22 @@ jobs:
       - run: pnpm check
       - run: pnpm build
       - run: pnpm pack:dry-run
-      # Configure each package's npm trusted publisher to this workflow before
-      # creating a release tag. npm obtains short-lived publish authorization
-      # from the job's OIDC identity.
+
+  publish:
+    if: inputs.publish == true
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: npm-release
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - run: npm publish --workspace=lib/isogate-replay --provenance --access public
       - run: npm publish --workspace=lib/isogate-node --provenance --access public
